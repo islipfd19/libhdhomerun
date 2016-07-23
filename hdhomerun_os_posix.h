@@ -30,7 +30,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/time.h>
-#include <sys/timeb.h>
 #include <sys/wait.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -42,6 +41,7 @@ typedef uint8_t bool_t;
 typedef void (*sig_t)(int);
 
 typedef struct {
+	volatile bool_t signaled;
 	pthread_mutex_t lock;
 	pthread_cond_t cond;
 } thread_cond_t;
@@ -58,6 +58,8 @@ extern LIBHDHOMERUN_API uint32_t random_get32(void);
 extern LIBHDHOMERUN_API uint64_t getcurrenttime(void);
 extern LIBHDHOMERUN_API void msleep_approx(uint64_t ms);
 extern LIBHDHOMERUN_API void msleep_minimum(uint64_t ms);
+
+extern LIBHDHOMERUN_API void pthread_mutex_dispose(pthread_mutex_t *mutex);
 
 extern LIBHDHOMERUN_API void thread_cond_init(thread_cond_t *cond);
 extern LIBHDHOMERUN_API void thread_cond_dispose(thread_cond_t *cond);
